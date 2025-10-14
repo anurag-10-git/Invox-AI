@@ -36,7 +36,7 @@ const Header = () => {
             <div className='w-8 h-8 bg-blue-900 rounded-md flex items-center justify-center'>
               <FileText className='w-4 h-4 text-white' />
             </div>
-            <span className='text-xl font-bold text-gray-900'>AI Invoice App</span>
+            <span className='text-xl font-bold text-gray-900'>Invox AI</span>
           </div>
           <div className="hidden lg:flex lg:items-center lg:space-x-8">
             <a href="#features" className='text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200 relative after:absolute after:left-0 after:bottom-0 after:w-0 after:h-0.5 after:bg-black after:transition-all hover:after:w-full'>Features</a>
