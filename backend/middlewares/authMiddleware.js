@@ -30,3 +30,5 @@ const protect = async (req, res, next) => {
 }
 
 module.exports = { protect }
+
+//"console.log(require('crypto').randomBytes(64).toString('hex'));"

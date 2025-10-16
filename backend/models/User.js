@@ -24,15 +24,15 @@ const userSchema = new mongoose.Schema({
   phone: { type: String, default: "" }
 }, { timestamps: true })
 
-
 userSchema.pre("save", async function (next) {
+  // avoiding multiple hashing - it could corrupt password
   if (!this.isModified("password")) return next();
-  const salt = await bcrypt.getSalt(10);
+  const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next()
 })
 
-userSchema.method.matchPassword = async function (enteredPassword) {
+userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
 
