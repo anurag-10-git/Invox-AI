@@ -1,4 +1,4 @@
-const express = reqiure("express");
+const express = require("express");
 const {
   createInvoice,
   getInvoices,
@@ -8,7 +8,7 @@ const {
 } = require("../controller/InvoiceController.js");
 const { protect } = require("../middlewares/authMiddleware.js")
 
-const router = express.router()
+const router = express.Router()
 
 router.route('/').post(protect, createInvoice).get(protect, getInvoices);
 router.route("/:id").get(protect, getInvoiceById).put(protect, updateInvoice).delete(protect, deleteInvoice);
