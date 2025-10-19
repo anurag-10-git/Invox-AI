@@ -9,10 +9,11 @@ import CreateInvoice from './pages/Invoices/CreateInvoice'
 import InvoiceDetail from './pages/Invoices/InvoiceDetail'
 import Profile from './pages/Profile/Profile'
 import ProtectedRoutes from './components/auth/ProtectedRoutes'
+import { AuthProvider } from './context/AuthContext'
 
 const App = () => {
   return (
-    <div>
+    <AuthProvider>
       <Router>
         <Routes>
           <Route path='/' element={<LandingPage />} />
@@ -39,7 +40,7 @@ const App = () => {
           }
         }}
       />
-    </div>
+    </AuthProvider>
   )
 }
 
