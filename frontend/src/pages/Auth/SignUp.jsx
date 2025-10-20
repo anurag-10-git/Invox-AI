@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { useNavigate } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, FileText, Loader2, Lock, Mail, User } from 'lucide-react';
+import { validateEmail, validatePassword } from '../../utils/helper';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPaths';
 
 const SignUp = () => {
   const { login } = useAuth();
@@ -33,12 +36,167 @@ const SignUp = () => {
     confirmPassword: false
   })
 
-  const validateName = (name) => { };
-  const validateConfirmPassword = (confirmPassword, password) => { };
-  const handleInputChange = (e) => { };
-  const handleBlur = (e) => { };
-  const isFromValid = () => { };
-  const handleSubmit = async () => { }
+  const validateName = (name) => {
+    if (!name) return "Name is required";
+    if (name.length < 2) return "Name must be at least 2 characters";
+    if (name.length > 50) return "Name must be less than 50 characters";
+    return "";
+  };
+
+  const validateConfirmPassword = (confirmPassword, password) => {
+    if (!confirmPassword) return "Please confirm your password";
+    if (confirmPassword !== password) return "Password do not match";
+    return "";
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
+
+    if (touched[name]) {
+      const newFieldErrors = { ...fieldErrors };
+      if (name === "name") {
+        newFieldErrors.name = validateName(value)
+      }
+      else if (name === "email") {
+        newFieldErrors.email = validateEmail(value)
+      }
+      else if (name === "password") {
+        newFieldErrors.password = validatePassword(value)
+        if (touched.confirmPassword) {
+          newFieldErrors.confirmPassword = validateConfirmPassword(
+            formData.confirmPassword,
+            value
+          )
+        }
+      }
+      else if (name === "confirmPassword") {
+        newFieldErrors.confirmPassword = validateConfirmPassword(
+          value,
+          formData.password
+        )
+      }
+      setFieldErrors(newFieldErrors)
+    }
+  };
+
+  const handleBlur = (e) => {
+    const { name } = e.target;
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true
+    }))
+
+    const newFieldErrors = { ...fieldErrors };
+    if (name === 'name') {
+      newFieldErrors.name = validateName(formData.name);
+    }
+    else if (name === "email") {
+      newFieldErrors.email = validateEmail(formData.email);
+    }
+    else if (name === "password") {
+      newFieldErrors.password = validatePassword(formData.password);
+    }
+    else if (name === "confirmPassword") {
+      newFieldErrors.confirmPassword = validateConfirmPassword(
+        formData.confirmPassword,
+        formData.password
+      )
+    }
+  };
+
+  const isFromValid = () => {
+    const nameError = validateName(formData.name);
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.password);
+
+    return (
+      !nameError &&
+      !emailError &&
+      !passwordError &&
+      !confirmPasswordError &&
+      formData.name &&
+      formData.email &&
+      formData.password &&
+      formData.confirmPassword
+    )
+  };
+
+  const handleSubmit = async () => {
+    const nameError = validateName(formData.name);
+    const emailError = validateEmail(formData.email);
+    const passwordError = validatePassword(formData.password);
+    const confirmPasswordError = validateConfirmPassword(formData.confirmPassword, formData.password);
+
+    if (nameError || emailError || passwordError || confirmPasswordError) {
+      setFieldErrors({
+        name: nameError,
+        email: emailError,
+        password: passwordError,
+        confirmPassword: confirmPasswordError
+      });
+      setTouched({
+        name: true,
+        email: true,
+        password: true,
+        confirmPassword: true
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await axiosInstance.post(
+        API_PATHS.AUTH.REGISTER,
+        {
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        }
+      )
+
+      const data = response.data;
+      const { token } = data;
+
+      if (response.status === 201) {
+        setSuccess("Account created successfully");
+
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: ""
+        })
+
+        setTouched({
+          name: false,
+          email: false,
+          password: false,
+          confirmPassword: false
+        })
+
+        login(data, token);
+        navigate("/dashboard");
+      }
+
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message) {
+        setError(error.response.data.message)
+      } else {
+        setError("Registration failed. Please try again.")
+      }
+      console.error("API error:", error.response || error)
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white flex items-center justify-center px-4 py-8">
@@ -135,7 +293,7 @@ const SignUp = () => {
               </button>
             </div>
             {fieldErrors.password && touched.password && (
-              <p className=''>
+              <p className='mt-1 text-sm text-red-600'>
                 {fieldErrors.password}
               </p>
             )}
@@ -205,7 +363,7 @@ const SignUp = () => {
 
           <button
             onClick={handleSubmit}
-            disabled={isLoading || isFromValid()}
+            disabled={isLoading || !isFromValid()}
             className="w-full bg-gradient-to-r from-blue-950 to-blue-900 text-white py-3 px-4 rounded-lg font-medium hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center group cursor-pointer"
           >
             {isLoading ?
@@ -228,7 +386,7 @@ const SignUp = () => {
               className="text-black font-medium hover:underline"
               onClick={() => navigate("/login")}
             >
-              Sign up
+              Log in
             </button>
           </p>
         </div>

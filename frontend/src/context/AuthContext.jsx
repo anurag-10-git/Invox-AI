@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false)
     }
-  };
+  }
 
   const login = (userData, token) => {
     localStorage.setItem('token', token);
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
     setUser(userData);
     setIsAuthenticated(true);
-  };
+  }
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     updateUser,
     checkAuthStatus
-  };
+  }
 
   return (
     <AuthContext.Provider value={value}>
