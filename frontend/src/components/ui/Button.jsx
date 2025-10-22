@@ -9,7 +9,6 @@ const Button = ({
   icon: Icon,
   ...props
 }) => {
-
   const baseClassses = 'inline-flex items-center justify-center font-medium rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-800 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed'
 
   const variantClasses = {

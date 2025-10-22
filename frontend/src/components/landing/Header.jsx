@@ -10,6 +10,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { isAuthenticated, user, logout } = useAuth()
+  console.log("isAuthenticated", isAuthenticated)
 
   const navigate = useNavigate();
 

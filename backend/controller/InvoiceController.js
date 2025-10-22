@@ -4,7 +4,6 @@ const Invoice = require('../models/Invoice')
 // @route POST /api/invoices
 // @access Private
 exports.createInvoice = async (req, res) => {
-  console.log("api is hitting")
   try {
     const user = req.user;
     const {
@@ -55,7 +54,7 @@ exports.createInvoice = async (req, res) => {
 // @access Private
 exports.getInvoices = async (req, res) => {
   try {
-    const invoices = await Invoice.find().populate("user", "name email");
+    const invoices = await Invoice.find({ user: req.user.id }).populate("user", "name email");
     res.status(200).json(invoices)
   } catch (error) {
     res.json(500).json({ message: "Error fetching invoices", error: error.message })
@@ -113,7 +112,20 @@ exports.updateInvoice = async (req, res) => {
   }
 }
 
-exports.getInvoiceById = (req, res) => { }
+exports.getInvoiceById = async (req, res) => {
+  try {
+    const invoice = await Invoice.findById(req.params.id).populate("user", "name email");
+    if (!invoice) return res.status(404).json({ message: "Invoice not found" });
+
+    if (invoice.user.toString() !== req.user.id) {
+      return res.status(401).json({ message: "Not authorized" });
+    }
+
+    res.json(invoice);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching invoice", error: error.message })
+  }
+}
 
 // @desc Delete Invoice
 // @route Delete /api/invoices/:id
@@ -122,6 +134,7 @@ exports.deleteInvoice = async (req, res) => {
   try {
     const invoice = await Invoice.findByIdAndDelete(req.params.id)
     if (!invoice) return res.status(404).json({ message: "Invoice not found" })
+
     res.json({ message: "Invoice deleted successfully" })
   } catch (error) {
     res.json(500).json({ message: "Error deleting invoice", error: error.message })
