@@ -74,7 +74,7 @@ const Footer = () => {
         <div className="border-t border-gray-800 py-8 mt-16">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className='text-gray-400'>
-              &copy; 2025 AI Invoice App. All right reserved.
+              &copy; 2025 Invox AI. Created by Anurag Mohan.
             </p>
             <div className='flex space-x-4'>
               <SocialLink href="#">

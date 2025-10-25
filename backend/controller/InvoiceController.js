@@ -65,10 +65,7 @@ exports.getInvoices = async (req, res) => {
 // @route PUT /api/invoices/:id
 // @access Private
 exports.updateInvoice = async (req, res) => {
-  console.log("i am inside updatedInvoice")
   try {
-    console.log('req.body')
-
     const {
       invoiceNumber,
       invoiceDate,
@@ -80,8 +77,6 @@ exports.updateInvoice = async (req, res) => {
       paymentTerms,
       status
     } = req.body;
-
-    console.log('req.body')
 
     //recalculate totals i items changed
     let subtotal = 0;
@@ -110,9 +105,7 @@ exports.updateInvoice = async (req, res) => {
       total
     }, { new: true })
 
-    console.log("updatedInvoice -------")
     if (!updatedInvoice) return res.json({ message: "Invoice not found" })
-    console.log("req completed")
     res.json(updatedInvoice)
   } catch (error) {
     res.json(500).json({ message: "Error updating invoice", error: error.message })
@@ -124,7 +117,7 @@ exports.getInvoiceById = async (req, res) => {
     const invoice = await Invoice.findById(req.params.id).populate("user", "name email");
     if (!invoice) return res.status(404).json({ message: "Invoice not found" });
 
-    if (invoice.user.toString() !== req.user.id) {
+    if (invoice.user._id.toString() !== req.user.id) {
       return res.status(401).json({ message: "Not authorized" });
     }
 
