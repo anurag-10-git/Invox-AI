@@ -78,7 +78,7 @@ const DashboadLayout = ({ children, acitveMenu }) => {
         ${sidebarCollapsed ? "w-16" : "w-64"}
          bg-white border-r border-gray-200`}>
         <div className="flex items-center h-16 border-b border-gray-200 px-6">
-          <Link className="flex items-center space-x-3" to="/dashboard">
+          <Link className="flex items-center space-x-3" to="/">
             <div className="h-8 w-8 bg-gradient-to-br from-blue-900 to-blue-700  rounded-lg flex items-center justify-center">
               <Briefcase className="h-5 w-5 text-white" />
             </div>

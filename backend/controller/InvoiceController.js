@@ -65,7 +65,10 @@ exports.getInvoices = async (req, res) => {
 // @route PUT /api/invoices/:id
 // @access Private
 exports.updateInvoice = async (req, res) => {
+  console.log("i am inside updatedInvoice")
   try {
+    console.log('req.body')
+
     const {
       invoiceNumber,
       invoiceDate,
@@ -78,6 +81,8 @@ exports.updateInvoice = async (req, res) => {
       status
     } = req.body;
 
+    console.log('req.body')
+
     //recalculate totals i items changed
     let subtotal = 0;
     let taxTotal = 0;
@@ -89,6 +94,7 @@ exports.updateInvoice = async (req, res) => {
     }
 
     const total = subtotal + taxTotal;
+    console.log("total", total)
     const updatedInvoice = await Invoice.findByIdAndUpdate(req.params.id, {
       invoiceNumber,
       invoiceDate,
@@ -104,8 +110,9 @@ exports.updateInvoice = async (req, res) => {
       total
     }, { new: true })
 
+    console.log("updatedInvoice -------")
     if (!updatedInvoice) return res.json({ message: "Invoice not found" })
-
+    console.log("req completed")
     res.json(updatedInvoice)
   } catch (error) {
     res.json(500).json({ message: "Error updating invoice", error: error.message })

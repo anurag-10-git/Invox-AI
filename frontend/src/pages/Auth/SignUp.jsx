@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, FileText, Loader2, Lock, Mail, User } from 'lucide-react';
 import { validateEmail, validatePassword } from '../../utils/helper';
 import axiosInstance from '../../utils/axiosInstance';
@@ -202,9 +202,11 @@ const SignUp = () => {
     <div className="min-h-screen bg-white flex items-center justify-center px-4 py-8">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-950 to-blue-900 rounded-xl mx-auto m-6 flex items-center justify-center">
-            <FileText className='w-6 h-6 text-white' />
-          </div>
+          <Link to="/">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-950 to-blue-900 rounded-xl mx-auto m-6 flex items-center justify-center">
+              <FileText className='w-6 h-6 text-white' />
+            </div>
+          </Link>
           <h1 className='text-2xl font-semibold text-gray-900 mb-2'>
             Create Account
           </h1>

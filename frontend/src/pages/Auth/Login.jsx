@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "../../context/AuthContext"
 import { useState } from "react";
 import { ArrowRight, Eye, EyeOff, FileText, Loader2, Lock, Mail } from "lucide-react";
@@ -125,9 +125,11 @@ const Login = () => {
     <div className="min-h-screen bg-white flex items-center justify-center px-4">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-950 to-blue-900 rounded-xl mx-auto mb-6 flex items-center justify-center">
-            <FileText className="w-6 h-6 text-white" />
-          </div>
+          <Link to="/">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-950 to-blue-900 rounded-xl mx-auto mb-6 flex items-center justify-center">
+              <FileText className="w-6 h-6 text-white" />
+            </div>
+          </Link>
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">
             Login to Your Account
           </h1>
