@@ -11,8 +11,6 @@ const ReminderModal = ({ isOpen, onClose, invoiceId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasCopied, setHasCopied] = useState(false);
 
-  console.log('invoiceId', invoiceId)
-
   useEffect(() => {
     if (isOpen && invoiceId) {
       const generateReminder = async () => {

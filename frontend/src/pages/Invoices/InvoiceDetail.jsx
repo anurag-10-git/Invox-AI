@@ -23,7 +23,7 @@ const InvoiceDetail = () => {
         const response = await axiosInstance.get(API_PATHS.INVOICE.GET_INVOICE_BY_ID(id));
         setInvoice(response.data);
       } catch (error) {
-        console.log(error)
+        console.error(error)
       } finally {
         setLoading(false)
       }
@@ -56,8 +56,6 @@ const InvoiceDetail = () => {
     )
   }
 
-  console.log(invoice.items)
-
   if (!invoice) {
     return (
       <div className='flex flex-col items-center justify-center py-12 text-center bg-slate-50 rounded-lg'>
@@ -76,9 +74,11 @@ const InvoiceDetail = () => {
     return <CreateInvoice existingInvoice={invoice} onSave={handleUpdate} />
   }
 
+  console.log("id", id);
+
   return (
     <>
-      <ReminderModal isOpen={isReminderModalOpen} onClose={() => setIsReminderModalOpen(false)} />
+      <ReminderModal isOpen={isReminderModalOpen} onClose={() => setIsReminderModalOpen(false)} invoiceId={id} />
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 print:hidden">
         <h1 className="text-2xl font-semibold text-slate-900 mb-4 sm:mb-0">
           Invoice <span className='font-mono text-slate-500'>{invoice.invoiceNumber}</span>

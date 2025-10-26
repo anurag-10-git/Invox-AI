@@ -66,7 +66,6 @@ const parseInvoiceFromText = async (req, res) => {
 const generateReminderEmail = async (req, res) => {
   const { invoiceId } = req.body;
 
-  console.log(req.body)
   try {
     const invoice = await Invoice.findById(invoiceId)
 

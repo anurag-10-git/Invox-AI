@@ -106,11 +106,10 @@ const Login = () => {
           }, 2000);
         }
       } else {
-        console.log(response)
         setError(response.data.message || "Invalid Credientials")
       }
     } catch (error) {
-      console.log(error)
+      <console className="erro"></console>(error)
       if (error.response && error.response.data && error.response.data.message) {
         setError(error.response.data.message);
       } else {

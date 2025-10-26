@@ -44,7 +44,7 @@ const AllInvoices = () => {
         setInvoices(invoices.filter(invoice => invoice._id !== id));
       } catch (error) {
         setError('Failed to delete invoice.');
-        console.log(error);
+        console.error(error);
       }
     }
   }
@@ -61,7 +61,7 @@ const AllInvoices = () => {
       setInvoices(invoices.map(inv => inv._id === invoice._id ? response.data : inv));
     } catch (e) {
       setError('Failed to update invoice status');
-      console.log(e)
+      console.error(e)
     } finally {
       setStatusChangeLoading(null);
     }

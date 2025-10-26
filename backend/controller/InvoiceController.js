@@ -89,7 +89,6 @@ exports.updateInvoice = async (req, res) => {
     }
 
     const total = subtotal + taxTotal;
-    console.log("total", total)
     const updatedInvoice = await Invoice.findByIdAndUpdate(req.params.id, {
       invoiceNumber,
       invoiceDate,
